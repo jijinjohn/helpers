@@ -1,0 +1,93 @@
+# .bashrc
+
+# This is to prevent fortune from breaking up scp -- Jijin
+# Test for an interactive shell.  There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+if [[ $- != *i* ]]; then
+	   # Shell is non-interactive.  Be done now
+	      return
+	      fi
+
+fortune -c;
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific aliases and functions
+export EDITOR=vim
+alias tftpserver='in.tftpd -l -u root -c -v -s /tftpboot'
+alias f='fortune -c'
+
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+#apparently these things aren't always set up by xinetd -- Jijin
+tftpserver
+
+# for history appending...if it becomes bothersome, can remove it
+export HISTSIZE=20000
+export HISTFILESIZE=40000
+export HISTCONTROL=erasedups:ignoredups:ignorespace
+#export HISTIGNORE="fg:[ \t]*"
+export HISTIGNORE="[ ]*"
+shopt -s histappend
+PROMPT_COMMAND="history -a;  history -c; history -r"
+
+alias vi='vim'
+
+# aliases for common dictionaries
+alias jWorkspace='cd /home/Jmanalikkal/Workspace'
+alias jGithub='cd /home/Jmanalikkal/Workspace/Github'
+alias jtemp='cd /home/Jmanalikkal/temp'
+alias jGames='cd /home/Jmanalikkal/Desktop/Games'
+alias jSetups='cd /home/Jmanalikkal/Setups'
+alias jCavium='cd /home/Jmanalikkal/Cavium_Networks/'
+alias jTftpboot='cd /tftpboot/'
+alias jclang='cd /home/Jmanalikkal/Workspace/clang'
+
+alias jvimrc='vim /home/Jmanalikkal/.vimrc'
+alias jbashrc='vim /home/Jmanalikkal/.bashrc'
+alias jsvimrc='source /home/Jmanalikkal/.vimrc'
+alias jsbashrc='source /home/Jmanalikkal/.bashrc'
+
+alias jchown='sudo chown -R Jmanalikkal:Jmanalikkal .'
+
+alias jsvndiff='svn diff>/tmp/svndiff; vi /tmp/svndiff'
+alias jout='vi /tmp/out'
+
+alias jtmp='/tmp/jtemp'
+
+alias jcov='lcov -c -d . -o jijin.info; rm -rf jijin; genhtml jijin.info -o jijin; rm -rf /var/www/html/jijin/; cp -r jijin /var/www/html/'
+
+alias jvar='tail -f /var/log/messages'
+
+# For subversion autocompletion
+#source /etc/bash_completion.d/subversion
+# do yum install bash-completion for this
+source /etc/bash_completion
+
+# Coloured make, courtesy Nirmoy
+# modified by Jijin - do dircolors -p to make sense of this
+colored_make()
+{
+	#pathpat="(/[^/]*)+:[0-9]+"
+	#pathpat="^.*:[0-9]+"
+	errorpat="[Ee]rror"
+	warningpat="[Ww]arning"
+	ccerror=$(echo -e "\033[07;32m")
+	ccwarning=$(echo -e "\033[07;33m")
+	ccend=$(echo -e "\033[0m")
+	#/usr/bin/make "$@" 2>&1 | sed -E -e "/[Ee]rror[: ]/ s%$pathpat%$ccerror&$ccend%g" -e "/[Ww]arning[: ]/ s%$pathpat%$ccwarning&$ccend%g"
+	/usr/bin/make "$@" 2>&1 | sed -E -e "/[Ee]rror[: ]/ s%$errorpat%$ccerror&$ccend%g" -e "/[Ww]arning[: ]/ s%$warningpat%$ccwarning&$ccend%g"
+	return ${PIPESTATUS[0]}
+}
+alias make='colored_make'
+
+alias jusb='ll /dev/ttyUSB*'
+
+alias jwhile='while true; do date; sleep 180; clear; done'
+
+hostname jman
