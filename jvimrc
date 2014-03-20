@@ -10,16 +10,16 @@ syntax on
 set tabpagemax=30
 
 " tab == x spaces
-set tabstop=4
+set tabstop=8
 
 " used for auto indent
-set shiftwidth=4
+set shiftwidth=8
 
 set mouse= 
 
 set t_Co=256
 
-#colo ir_black
+"colo ir_black
 
 set background=dark
 
